@@ -217,7 +217,7 @@ export function renderVenue(root, id) {
 
 export function renderMap(root) {
   const pinned = venues.filter((v) => venueMapPercent(v));
-  const art = catalogMeta.geoFocus?.map_art || '/map/dmv-art.png';
+  const art = catalogMeta.geoFocus?.map_art || '/map/dmv-art.jpg';
 
   root.innerHTML = `
     <h1 class="page-title">Map</h1>

@@ -20,7 +20,7 @@ npm run preview
 ## Stack
 
 - Vite + vanilla JavaScript (ES modules)
-- Custom illustrated map (public/map/dmv-art.png) with logo badges
+- Custom illustrated map (public/map/dmv-art.jpg) with logo badges
 - Hash routing for home, map, venue detail, and log
 
 ## Data provenance
