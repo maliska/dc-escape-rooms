@@ -30,12 +30,12 @@ npm run preview
 - Geographic focus: DC proper + Arlington + Alexandria + North Bethesda
 - Out-of-focus venues remain in JSON with excluded true and are filtered from the UI
 - Escape Artist DC is status uncertain (dimmed on map; hidden by default Open only filter)
-- Coordinates from Nominatim 2026-09-07; map badges use hand-tuned map_x/map_y; Locate me projects lat/lng into the same bounds
+- Coordinates from Nominatim 2026-09-07; map badges use hand-tuned map_x/map_y on neighborhood-labeled art
 
 ## Features
 
 1. Home/list with filters
-2. Illustrated map with venue logo badges, Locate me, mobile pan/zoom
+2. Illustrated neighborhood map with venue logo badges, overlap nudge, mobile pan/pinch
 3. Venue detail with curator notes and private log fields
 4. My log in localStorage only
 

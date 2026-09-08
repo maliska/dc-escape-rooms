@@ -215,8 +215,63 @@ export function renderVenue(root, id) {
 }
 
 export function renderMap(root) {
-  const pinned = venues.filter((v) => venueMapPercent(v));
+  const pinned = venues
+    .map((v) => {
+      const pct = venueMapPercent(v);
+      return pct ? { v, x: pct.x, y: pct.y } : null;
+    })
+    .filter(Boolean);
+
+  /** Group pins within ~5% Euclidean distance, then fan around centroid. */
+  const CLUSTER_DIST = 5;
+  const FAN_RADIUS = 3;
+  const parent = pinned.map((_, i) => i);
+  const find = (i) => (parent[i] === i ? i : (parent[i] = find(parent[i])));
+  const unite = (a, b) => {
+    a = find(a);
+    b = find(b);
+    if (a !== b) parent[a] = b;
+  };
+  for (let i = 0; i < pinned.length; i++) {
+    for (let j = i + 1; j < pinned.length; j++) {
+      if (Math.hypot(pinned[i].x - pinned[j].x, pinned[i].y - pinned[j].y) <= CLUSTER_DIST) {
+        unite(i, j);
+      }
+    }
+  }
+  const groups = new Map();
+  pinned.forEach((p, i) => {
+    const r = find(i);
+    if (!groups.has(r)) groups.set(r, []);
+    groups.get(r).push(p);
+  });
+
+  const placed = [];
+  for (const group of groups.values()) {
+    if (group.length === 1) {
+      placed.push({ ...group[0], badge: null });
+      continue;
+    }
+    const cx = group.reduce((s, p) => s + p.x, 0) / group.length;
+    const cy = group.reduce((s, p) => s + p.y, 0) / group.length;
+    group.forEach((p, i) => {
+      const angle = (Math.PI * 2 * i) / group.length - Math.PI / 2;
+      placed.push({
+        ...p,
+        x: cx + FAN_RADIUS * Math.cos(angle),
+        y: cy + FAN_RADIUS * Math.sin(angle),
+        // Badge on primary when 3+ would still collide after nudging
+        badge: group.length >= 3 && i === 0 ? group.length - 1 : null,
+      });
+    });
+  }
+
   const art = catalogMeta.geoFocus?.map_art || '/map/dmv-art.jpg';
+  const shortLabel = (v) => {
+    const raw = v.brand || v.name || '';
+    const cut = raw.split('—')[0].split('–')[0].trim();
+    return cut.length > 22 ? cut.slice(0, 20) + '…' : cut;
+  };
 
   root.innerHTML = `
     <div class="map-fullscreen">
@@ -224,19 +279,19 @@ export function renderMap(root) {
         <div class="illustrated-map-stage" id="map-stage">
           <img class="map-art" id="map-art" src="${art}" alt="Illustrated map of DC, Arlington, Alexandria, and Bethesda" draggable="false" />
           <div class="map-pins" id="map-pins">
-            ${pinned
-              .map((v) => {
-                const { x, y } = venueMapPercent(v);
+            ${placed
+              .map(({ v, x, y, badge }) => {
                 const uncertain = v.status === 'uncertain' || v.status === 'closed';
                 const logo = v.logo || `/logos/${v.id}.png`;
                 return `
-                <a class="map-pin${uncertain ? ' uncertain' : ''}"
+                <a class="map-pin${uncertain ? ' uncertain' : ''}${badge ? ' has-badge' : ''}"
                    href="#/venue/${escapeHtml(v.id)}"
                    style="left:${x}%; top:${y}%"
                    title="${escapeHtml(v.name)}"
                    aria-label="${escapeHtml(v.name)}">
                   <img src="${escapeHtml(logo)}" alt="" loading="lazy" />
-                  <span class="map-pin-label">${escapeHtml(v.brand || v.name)}</span>
+                  ${badge != null ? `<span class="map-pin-badge">+${badge}</span>` : ''}
+                  <span class="map-pin-label">${escapeHtml(shortLabel(v))}</span>
                 </a>`;
               })
               .join('')}
@@ -256,6 +311,7 @@ export function renderMap(root) {
   let iw = 0;
   let ih = 0;
   let minScale = 1;
+  let maxScale = 4;
 
   const apply = () => {
     stage.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
@@ -276,8 +332,12 @@ export function renderMap(root) {
     const vw = viewport.clientWidth;
     const vh = viewport.clientHeight;
     if (!iw || !ih || !vw || !vh) return;
-    minScale = Math.max(vw / iw, vh / ih);
-    scale = minScale;
+    const cover = Math.max(vw / iw, vh / ih);
+    // Gentler initial zoom (~4% padding) so compass/edges aren't clipped as hard.
+    // Pinch out can still reach true cover; pinch in up to maxScale.
+    minScale = cover;
+    maxScale = cover * 4;
+    scale = cover * 0.92;
     tx = (vw - iw * scale) / 2;
     ty = (vh - ih * scale) / 2;
     clampPan();
@@ -290,7 +350,9 @@ export function renderMap(root) {
     const y = clientY - rect.top;
     const imgX = (x - tx) / scale;
     const imgY = (y - ty) / scale;
-    scale = Math.min(minScale * 4, Math.max(minScale, nextScale));
+    // Allow zooming out slightly past cover (to the gentler 0.92×) and in to maxScale.
+    const floor = minScale * 0.92;
+    scale = Math.min(maxScale, Math.max(floor, nextScale));
     tx = x - imgX * scale;
     ty = y - imgY * scale;
     clampPan();
@@ -358,7 +420,8 @@ export function renderMap(root) {
       const rect = viewport.getBoundingClientRect();
       const lx = cx - rect.left;
       const ly = cy - rect.top;
-      scale = Math.min(minScale * 4, Math.max(minScale, pinchStart.scale * (dist / pinchStart.dist)));
+      const floor = minScale * 0.92;
+      scale = Math.min(maxScale, Math.max(floor, pinchStart.scale * (dist / pinchStart.dist)));
       tx = lx - pinchStart.imgX * scale;
       ty = ly - pinchStart.imgY * scale;
       clampPan();

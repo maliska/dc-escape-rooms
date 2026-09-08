@@ -424,6 +424,26 @@ main {
   pointer-events: none;
   line-height: 1.2;
 }
+
+.map-pin-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  padding: 0 0.28rem;
+  border-radius: 999px;
+  background: #c45c26;
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 800;
+  line-height: 1.15rem;
+  text-align: center;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  z-index: 3;
+}
 .map-pin:hover,
 .map-pin:focus-visible {
   transform: translate(-50%, -50%) scale(1.12);
