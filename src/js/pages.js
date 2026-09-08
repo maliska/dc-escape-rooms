@@ -220,43 +220,44 @@ export function renderMap(root) {
   const art = catalogMeta.geoFocus?.map_art || '/map/dmv-art.jpg';
 
   root.innerHTML = `
-    <h1 class="page-title">Map</h1>
-    <p class="lede">Illustrated DMV map with venue logos. Pins are hand-tuned to neighborhoods on the art (Downtown, Georgetown, Arlington, Alexandria, Bethesda, Capitol Hill). Tap a logo for details. Uncertain venues appear dimmed.</p>
-    <div class="map-toolbar">
-      <button type="button" class="btn" id="locate-me">Locate me</button>
-      <button type="button" class="btn secondary" id="map-zoom-in" aria-label="Zoom in">+</button>
-      <button type="button" class="btn secondary" id="map-zoom-out" aria-label="Zoom out">−</button>
-      <button type="button" class="btn secondary" id="map-zoom-reset">Reset</button>
-      <span class="map-locate-status" id="locate-status" hidden></span>
-    </div>
-    <div class="illustrated-map-viewport" id="map-viewport">
-      <div class="illustrated-map-stage" id="map-stage" style="--map-scale: 1">
-        <img class="map-art" src="${art}" alt="Illustrated map of DC, Arlington, Alexandria, and Bethesda" draggable="false" />
-        <div class="map-pins" id="map-pins">
-          ${pinned
-            .map((v) => {
-              const { x, y } = venueMapPercent(v);
-              const uncertain = v.status === 'uncertain' || v.status === 'closed';
-              const logo = v.logo || `/logos/${v.id}.png`;
-              return `
-              <a class="map-pin${uncertain ? ' uncertain' : ''}"
-                 href="#/venue/${escapeHtml(v.id)}"
-                 style="left:${x}%; top:${y}%"
-                 title="${escapeHtml(v.name)}"
-                 aria-label="${escapeHtml(v.name)}">
-                <img src="${escapeHtml(logo)}" alt="" loading="lazy" />
-                <span class="map-pin-label">${escapeHtml(v.brand || v.name)}</span>
-              </a>`;
-            })
-            .join('')}
+    <div class="map-fullscreen">
+      <div class="map-floating-ui">
+        <div class="map-toolbar">
+          <button type="button" class="btn map-fab" id="locate-me">Locate me</button>
+          <button type="button" class="btn secondary map-fab" id="map-zoom-in" aria-label="Zoom in">+</button>
+          <button type="button" class="btn secondary map-fab" id="map-zoom-out" aria-label="Zoom out">−</button>
+          <button type="button" class="btn secondary map-fab" id="map-zoom-reset">Reset</button>
+          <span class="map-locate-status" id="locate-status" hidden></span>
         </div>
-        <div class="you-marker" id="you-marker" hidden>
-          <span class="you-dot"></span>
-          <span class="you-label">You</span>
+      </div>
+      <div class="illustrated-map-viewport" id="map-viewport">
+        <div class="illustrated-map-stage" id="map-stage" style="--map-scale: 1">
+          <img class="map-art" src="${art}" alt="Illustrated map of DC, Arlington, Alexandria, and Bethesda" draggable="false" />
+          <div class="map-pins" id="map-pins">
+            ${pinned
+              .map((v) => {
+                const { x, y } = venueMapPercent(v);
+                const uncertain = v.status === 'uncertain' || v.status === 'closed';
+                const logo = v.logo || `/logos/${v.id}.png`;
+                return `
+                <a class="map-pin${uncertain ? ' uncertain' : ''}"
+                   href="#/venue/${escapeHtml(v.id)}"
+                   style="left:${x}%; top:${y}%"
+                   title="${escapeHtml(v.name)}"
+                   aria-label="${escapeHtml(v.name)}">
+                  <img src="${escapeHtml(logo)}" alt="" loading="lazy" />
+                  <span class="map-pin-label">${escapeHtml(v.brand || v.name)}</span>
+                </a>`;
+              })
+              .join('')}
+          </div>
+          <div class="you-marker" id="you-marker" hidden>
+            <span class="you-dot"></span>
+            <span class="you-label">You</span>
+          </div>
         </div>
       </div>
     </div>
-    <p class="map-legend">${pinned.length} venues on map · scroll / pinch or use +/− to zoom · logos are trademarks of their owners</p>
   `;
 
   const viewport = root.querySelector('#map-viewport');

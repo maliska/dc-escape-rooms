@@ -37,6 +37,7 @@ function route() {
   else if (path.startsWith('/venue/')) active = 'home';
 
   app.innerHTML = shell(active);
+  app.classList.toggle('map-mode', active === 'map');
   const content = document.getElementById('content');
 
   if (path === '/' || path === '' || path.startsWith('/?')) {
