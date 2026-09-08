@@ -7,7 +7,6 @@ import {
   uniqueCities,
   filterVenues,
   venueMapPercent,
-  latLngToPercent,
   catalogMeta,
 } from './data.js';
 import {
@@ -221,18 +220,9 @@ export function renderMap(root) {
 
   root.innerHTML = `
     <div class="map-fullscreen">
-      <div class="map-floating-ui">
-        <div class="map-toolbar">
-          <button type="button" class="btn map-fab" id="locate-me">Locate me</button>
-          <button type="button" class="btn secondary map-fab" id="map-zoom-in" aria-label="Zoom in">+</button>
-          <button type="button" class="btn secondary map-fab" id="map-zoom-out" aria-label="Zoom out">−</button>
-          <button type="button" class="btn secondary map-fab" id="map-zoom-reset">Reset</button>
-          <span class="map-locate-status" id="locate-status" hidden></span>
-        </div>
-      </div>
       <div class="illustrated-map-viewport" id="map-viewport">
-        <div class="illustrated-map-stage" id="map-stage" style="--map-scale: 1">
-          <img class="map-art" src="${art}" alt="Illustrated map of DC, Arlington, Alexandria, and Bethesda" draggable="false" />
+        <div class="illustrated-map-stage" id="map-stage">
+          <img class="map-art" id="map-art" src="${art}" alt="Illustrated map of DC, Arlington, Alexandria, and Bethesda" draggable="false" />
           <div class="map-pins" id="map-pins">
             ${pinned
               .map((v) => {
@@ -251,10 +241,6 @@ export function renderMap(root) {
               })
               .join('')}
           </div>
-          <div class="you-marker" id="you-marker" hidden>
-            <span class="you-dot"></span>
-            <span class="you-label">You</span>
-          </div>
         </div>
       </div>
     </div>
@@ -262,96 +248,153 @@ export function renderMap(root) {
 
   const viewport = root.querySelector('#map-viewport');
   const stage = root.querySelector('#map-stage');
-  const you = root.querySelector('#you-marker');
-  const statusEl = root.querySelector('#locate-status');
+  const img = root.querySelector('#map-art');
+
   let scale = 1;
+  let tx = 0;
+  let ty = 0;
+  let iw = 0;
+  let ih = 0;
+  let minScale = 1;
 
-  const applyScale = () => {
-    stage.style.setProperty('--map-scale', String(scale));
-    stage.style.width = `${scale * 100}%`;
+  const apply = () => {
+    stage.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
   };
 
-  root.querySelector('#map-zoom-in').addEventListener('click', () => {
-    scale = Math.min(3, scale + 0.25);
-    applyScale();
-  });
-  root.querySelector('#map-zoom-out').addEventListener('click', () => {
-    scale = Math.max(1, scale - 0.25);
-    applyScale();
-  });
-  root.querySelector('#map-zoom-reset').addEventListener('click', () => {
-    scale = 1;
-    applyScale();
-    viewport.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
-  });
-
-  // Basic touch drag-pan when zoomed (in addition to native overflow scroll)
-  let dragging = false;
-  let startX = 0;
-  let startY = 0;
-  let scrollLeft = 0;
-  let scrollTop = 0;
-  viewport.addEventListener('pointerdown', (e) => {
-    if (e.target.closest('.map-pin')) return;
-    dragging = true;
-    viewport.classList.add('dragging');
-    startX = e.clientX;
-    startY = e.clientY;
-    scrollLeft = viewport.scrollLeft;
-    scrollTop = viewport.scrollTop;
-    viewport.setPointerCapture?.(e.pointerId);
-  });
-  viewport.addEventListener('pointermove', (e) => {
-    if (!dragging) return;
-    viewport.scrollLeft = scrollLeft - (e.clientX - startX);
-    viewport.scrollTop = scrollTop - (e.clientY - startY);
-  });
-  const endDrag = () => {
-    dragging = false;
-    viewport.classList.remove('dragging');
+  const clampPan = () => {
+    const vw = viewport.clientWidth;
+    const vh = viewport.clientHeight;
+    const sw = iw * scale;
+    const sh = ih * scale;
+    if (sw <= vw) tx = (vw - sw) / 2;
+    else tx = Math.min(0, Math.max(vw - sw, tx));
+    if (sh <= vh) ty = (vh - sh) / 2;
+    else ty = Math.min(0, Math.max(vh - sh, ty));
   };
-  viewport.addEventListener('pointerup', endDrag);
-  viewport.addEventListener('pointercancel', endDrag);
 
-  root.querySelector('#locate-me').addEventListener('click', () => {
-    statusEl.hidden = false;
-    statusEl.textContent = 'Locating…';
-    if (!navigator.geolocation) {
-      statusEl.textContent = 'Geolocation not supported in this browser.';
+  const fitCover = () => {
+    const vw = viewport.clientWidth;
+    const vh = viewport.clientHeight;
+    if (!iw || !ih || !vw || !vh) return;
+    minScale = Math.max(vw / iw, vh / ih);
+    scale = minScale;
+    tx = (vw - iw * scale) / 2;
+    ty = (vh - ih * scale) / 2;
+    clampPan();
+    apply();
+  };
+
+  const zoomAt = (clientX, clientY, nextScale) => {
+    const rect = viewport.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+    const imgX = (x - tx) / scale;
+    const imgY = (y - ty) / scale;
+    scale = Math.min(minScale * 4, Math.max(minScale, nextScale));
+    tx = x - imgX * scale;
+    ty = y - imgY * scale;
+    clampPan();
+    apply();
+  };
+
+  const onReady = () => {
+    iw = img.naturalWidth;
+    ih = img.naturalHeight;
+    fitCover();
+  };
+
+  if (img.complete && img.naturalWidth) onReady();
+  else img.addEventListener('load', onReady);
+
+  const onResize = () => {
+    if (!document.body.contains(viewport)) {
+      window.removeEventListener('resize', onResize);
       return;
     }
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const { latitude, longitude } = pos.coords;
-        const { x, y } = latLngToPercent(latitude, longitude);
-        you.hidden = false;
-        you.style.left = `${x}%`;
-        you.style.top = `${y}%`;
-        const inBounds =
-          latitude <= 39.08 &&
-          latitude >= 38.78 &&
-          longitude >= -77.15 &&
-          longitude <= -76.97;
-        statusEl.textContent = inBounds
-          ? 'You are on the map.'
-          : 'Located — outside the illustrated focus area (marker clamped to edge).';
-        // Scroll marker into view roughly
-        const rect = stage.getBoundingClientRect();
-        viewport.scrollTo({
-          left: (x / 100) * stage.scrollWidth - viewport.clientWidth / 2,
-          top: (y / 100) * stage.scrollHeight - viewport.clientHeight / 2,
-          behavior: 'smooth',
-        });
-      },
-      (err) => {
-        statusEl.textContent =
-          err.code === 1
-            ? 'Location permission denied.'
-            : 'Could not get your location.';
-      },
-      { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
-    );
+    fitCover();
+  };
+  window.addEventListener('resize', onResize);
+
+  const pointers = new Map();
+  let panStart = null;
+  let pinchStart = null;
+
+  viewport.addEventListener('pointerdown', (e) => {
+    if (e.target.closest('.map-pin') && pointers.size === 0) return;
+    viewport.setPointerCapture?.(e.pointerId);
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    viewport.classList.add('dragging');
+
+    if (pointers.size === 1) {
+      panStart = { x: e.clientX, y: e.clientY, tx, ty };
+      pinchStart = null;
+    } else if (pointers.size >= 2) {
+      const pts = [...pointers.values()].slice(0, 2);
+      const dist = Math.hypot(pts[1].x - pts[0].x, pts[1].y - pts[0].y) || 1;
+      const cx = (pts[0].x + pts[1].x) / 2;
+      const cy = (pts[0].y + pts[1].y) / 2;
+      const rect = viewport.getBoundingClientRect();
+      const lx = cx - rect.left;
+      const ly = cy - rect.top;
+      pinchStart = {
+        dist,
+        scale,
+        imgX: (lx - tx) / scale,
+        imgY: (ly - ty) / scale,
+      };
+      panStart = null;
+    }
   });
+
+  viewport.addEventListener('pointermove', (e) => {
+    if (!pointers.has(e.pointerId)) return;
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    if (pointers.size >= 2 && pinchStart) {
+      const pts = [...pointers.values()].slice(0, 2);
+      const dist = Math.hypot(pts[1].x - pts[0].x, pts[1].y - pts[0].y) || 1;
+      const cx = (pts[0].x + pts[1].x) / 2;
+      const cy = (pts[0].y + pts[1].y) / 2;
+      const rect = viewport.getBoundingClientRect();
+      const lx = cx - rect.left;
+      const ly = cy - rect.top;
+      scale = Math.min(minScale * 4, Math.max(minScale, pinchStart.scale * (dist / pinchStart.dist)));
+      tx = lx - pinchStart.imgX * scale;
+      ty = ly - pinchStart.imgY * scale;
+      clampPan();
+      apply();
+    } else if (pointers.size === 1 && panStart) {
+      tx = panStart.tx + (e.clientX - panStart.x);
+      ty = panStart.ty + (e.clientY - panStart.y);
+      clampPan();
+      apply();
+    }
+  });
+
+  const endPointer = (e) => {
+    pointers.delete(e.pointerId);
+    if (pointers.size === 0) {
+      panStart = null;
+      pinchStart = null;
+      viewport.classList.remove('dragging');
+    } else if (pointers.size === 1) {
+      const pt = [...pointers.values()][0];
+      panStart = { x: pt.x, y: pt.y, tx, ty };
+      pinchStart = null;
+    }
+  };
+  viewport.addEventListener('pointerup', endPointer);
+  viewport.addEventListener('pointercancel', endPointer);
+
+  viewport.addEventListener(
+    'wheel',
+    (e) => {
+      e.preventDefault();
+      const factor = e.deltaY > 0 ? 0.9 : 1.1;
+      zoomAt(e.clientX, e.clientY, scale * factor);
+    },
+    { passive: false }
+  );
 }
 
 export function renderLog(root) {
