@@ -1,6 +1,6 @@
 {
   "generated_from": "docs/dmv-escape-rooms-v1.md",
-  "compiled": "2026-09-05",
+  "compiled": "2026-09-07",
   "schema_notes": "Matches V1 venue card schema; curator_notes from Notes column; price_band is coarse filter derived from price_band_pp; lat/lng filled via Nominatim once and committed",
   "geocode": {
     "provider": "Nominatim (OpenStreetMap)",
@@ -10,7 +10,7 @@
   "venues": [
     {
       "id": "teg-penn-quarter",
-      "name": "The Escape Game DC — Penn Quarter",
+      "name": "The Escape Game DC \u2014 Penn Quarter",
       "brand": "The Escape Game",
       "ownership": "chain",
       "city": "Washington",
@@ -24,8 +24,8 @@
       "scare_level": "none",
       "private_only": false,
       "metro_accessible": true,
-      "metro_notes": "Gallery Pl–Chinatown / Metro Center",
-      "price_band_pp": "$37–45",
+      "metro_notes": "Gallery Pl\u2013Chinatown / Metro Center",
+      "price_band_pp": "$37\u201345",
       "price_band": "30_40",
       "difficulty_notes": "Family-friendly / low scare. Shared slots possible when not full. Themes: Prison Break, The Depths, The Heist, Special Ops: Mysterious Market.",
       "status": "open",
@@ -36,11 +36,15 @@
         "washington.org listing"
       ],
       "staleness_flags": [],
-      "curator_notes": "Chain. Family-friendly / low scare. Shared slots possible when not full. Metro: yes — Gallery Pl–Chinatown / Metro Center. Group pkgs from ~$42; walk-up bands often ~$37–45 (verify at book)."
+      "curator_notes": "Chain. Family-friendly / low scare. Shared slots possible when not full. Metro: yes \u2014 Gallery Pl\u2013Chinatown / Metro Center. Group pkgs from ~$42; walk-up bands often ~$37\u201345 (verify at book).",
+      "excluded": false,
+      "logo": "/logos/teg-penn-quarter.png",
+      "map_x": 50,
+      "map_y": 38
     },
     {
       "id": "teg-georgetown",
-      "name": "The Escape Game DC — Georgetown",
+      "name": "The Escape Game DC \u2014 Georgetown",
       "brand": "The Escape Game",
       "ownership": "chain",
       "city": "Washington",
@@ -54,10 +58,10 @@
       "scare_level": "none",
       "private_only": false,
       "metro_accessible": false,
-      "metro_notes": "No direct Metro — bus/Circulator/rideshare; Georgetown has no Metro station",
-      "price_band_pp": "$37–45",
+      "metro_notes": "No direct Metro \u2014 bus/Circulator/rideshare; Georgetown has no Metro station",
+      "price_band_pp": "$37\u201345",
       "price_band": "30_40",
-      "difficulty_notes": "Low scare / all-ages. Shared possible. Themes: Titanic, Curse of the Mummy, Dr. Whack’s, The Cabin, Pirate’s Adventure.",
+      "difficulty_notes": "Low scare / all-ages. Shared possible. Themes: Titanic, Curse of the Mummy, Dr. Whack\u2019s, The Cabin, Pirate\u2019s Adventure.",
       "status": "open",
       "last_verified": "2026-09-05",
       "sources": [
@@ -65,11 +69,15 @@
         "https://theescapegame.com/dc/book-now/"
       ],
       "staleness_flags": [],
-      "curator_notes": "Chain. Low scare / all-ages. Shared possible. Metro: no direct — bus/Circulator/rideshare; Georgetown has no Metro station. Same brand band ~$37–45+."
+      "curator_notes": "Chain. Low scare / all-ages. Shared possible. Metro: no direct \u2014 bus/Circulator/rideshare; Georgetown has no Metro station. Same brand band ~$37\u201345+.",
+      "excluded": false,
+      "logo": "/logos/teg-georgetown.png",
+      "map_x": 20,
+      "map_y": 28
     },
     {
       "id": "teg-tysons",
-      "name": "The Escape Game — Tysons",
+      "name": "The Escape Game \u2014 Tysons",
       "brand": "The Escape Game",
       "ownership": "chain",
       "city": "Tysons",
@@ -84,7 +92,7 @@
       "private_only": false,
       "metro_accessible": true,
       "metro_notes": "Tysons Corner station + mall",
-      "price_band_pp": "$41–45",
+      "price_band_pp": "$41\u201345",
       "price_band": "40_50",
       "difficulty_notes": "Low scare. Shared possible. Themes: Prison Break, Playground, The Depths, Timeliner, Ruins, Cosmic Crisis. Opened Feb 2026.",
       "status": "open",
@@ -94,11 +102,13 @@
         "https://www.ffxnow.com/2026/02/09/the-escape-game-to-open-first-virginia-venue-in-tysons-tomorrow/"
       ],
       "staleness_flags": [],
-      "curator_notes": "Chain. Low scare. Shared possible. Metro: yes — Tysons Corner station + mall. Opened Feb 2026 (FFXnow). Press/AAA ~$41–45; event pkgs from ~$42."
+      "curator_notes": "Chain. Low scare. Shared possible. Metro: yes \u2014 Tysons Corner station + mall. Opened Feb 2026 (FFXnow). Press/AAA ~$41\u201345; event pkgs from ~$42.",
+      "excluded": true,
+      "excluded_reason": "Outside geographic focus (DC proper + Arlington + Alexandria + North Bethesda)"
     },
     {
       "id": "etr-penn-quarter",
-      "name": "Escape The Room DC — Penn Quarter",
+      "name": "Escape The Room DC \u2014 Penn Quarter",
       "brand": "Escape The Room",
       "ownership": "chain",
       "city": "Washington",
@@ -122,11 +132,15 @@
         "https://escapetheroom.com/dc/"
       ],
       "staleness_flags": [],
-      "curator_notes": "Chain. Mixed intensity (Jurassic hardest; not “actor scare”). Private upgrade available. Metro: yes — Gallery Place / Archives. From $37."
+      "curator_notes": "Chain. Mixed intensity (Jurassic hardest; not \u201cactor scare\u201d). Private upgrade available. Metro: yes \u2014 Gallery Place / Archives. From $37.",
+      "excluded": false,
+      "logo": "/logos/etr-penn-quarter.png",
+      "map_x": 57,
+      "map_y": 43
     },
     {
       "id": "etr-i-street",
-      "name": "Escape The Room DC — I Street",
+      "name": "Escape The Room DC \u2014 I Street",
       "brand": "Escape The Room",
       "ownership": "chain",
       "city": "Washington",
@@ -150,7 +164,11 @@
         "https://escapetheroom.com/dc/"
       ],
       "staleness_flags": [],
-      "curator_notes": "Chain. Outbreak more intense; Old West family-friendly. Quiz Boxing ≠ escape room. Metro: yes — Farragut North/West. From $37. Brand markets 8 experiences across 2 DC sites."
+      "curator_notes": "Chain. Outbreak more intense; Old West family-friendly. Quiz Boxing \u2260 escape room. Metro: yes \u2014 Farragut North/West. From $37. Brand markets 8 experiences across 2 DC sites.",
+      "excluded": false,
+      "logo": "/logos/etr-i-street.png",
+      "map_x": 40,
+      "map_y": 34
     },
     {
       "id": "insomnia-dc",
@@ -171,7 +189,7 @@
       "metro_notes": "Bus on Wisconsin; nearest Metro ~30+ min walk (Woodley Park)",
       "price_band_pp": "from ~$35",
       "price_band": "30_40",
-      "difficulty_notes": "Private only. Difficulty 7–10/10 on their scale; Patient/Dungeon more thriller. Live: Alchemist, Mafia, Dungeon Things, The Patient; Oblivion soon. Site also markets 5 unique rooms.",
+      "difficulty_notes": "Private only. Difficulty 7\u201310/10 on their scale; Patient/Dungeon more thriller. Live: Alchemist, Mafia, Dungeon Things, The Patient; Oblivion soon. Site also markets 5 unique rooms.",
       "status": "open",
       "last_verified": "2026-09-05",
       "sources": [
@@ -181,7 +199,11 @@
       "staleness_flags": [
         "room count marketing vs live list"
       ],
-      "curator_notes": "Indie. Private only. Difficulty 7–10/10 on their scale; Patient/Dungeon more thriller. Metro: weak — bus on Wisconsin; nearest Metro ~30+ min walk (Woodley Park). From ~$35 ($34.99 FAQ). Flag: room count marketing vs live list."
+      "curator_notes": "Indie. Private only. Difficulty 7\u201310/10 on their scale; Patient/Dungeon more thriller. Metro: weak \u2014 bus on Wisconsin; nearest Metro ~30+ min walk (Woodley Park). From ~$35 ($34.99 FAQ). Flag: room count marketing vs live list.",
+      "excluded": false,
+      "logo": "/logos/insomnia-dc.png",
+      "map_x": 24,
+      "map_y": 18
     },
     {
       "id": "escape-artist-dc",
@@ -200,9 +222,9 @@
       "private_only": null,
       "metro_accessible": true,
       "metro_notes": "Eastern Market (Orange/Blue/Silver)",
-      "price_band_pp": "~$20–25 (stale)",
+      "price_band_pp": "~$20\u201325 (stale)",
       "price_band": "under_30",
-      "difficulty_notes": "Historically ~3 rooms (Gallery Heist, House of Pawns, Night at the Museum). One of DC’s earliest. Often cited as budget / BYOB in older writeups.",
+      "difficulty_notes": "Historically ~3 rooms (Gallery Heist, House of Pawns, Night at the Museum). One of DC\u2019s earliest. Often cited as budget / BYOB in older writeups.",
       "status": "uncertain",
       "last_verified": "2026-09-05",
       "sources": [
@@ -214,9 +236,13 @@
         "official site 404 as of 2026-09-05",
         "Morty marks rooms Temporarily Closed",
         "older price listings stale",
-        "ops status uncertain — do not book without phone confirm: (202) 999-0087"
+        "ops status uncertain \u2014 do not book without phone confirm: (202) 999-0087"
       ],
-      "curator_notes": "Indie (one of DC’s earliest). Often cited as budget / BYOB in older writeups. Metro: yes — Eastern Market. Older listings ~$20–25 — stale. UNCERTAIN / likely closed or paused. Morty marks rooms Temporarily Closed; official site 404; community plays logged into 2024–2025 on Morty. Do not book without phone confirm: (202) 999-0087."
+      "curator_notes": "Indie (one of DC\u2019s earliest). Often cited as budget / BYOB in older writeups. Metro: yes \u2014 Eastern Market. Older listings ~$20\u201325 \u2014 stale. UNCERTAIN / likely closed or paused. Morty marks rooms Temporarily Closed; official site 404; community plays logged into 2024\u20132025 on Morty. Do not book without phone confirm: (202) 999-0087.",
+      "excluded": false,
+      "logo": "/logos/escape-artist-dc.png",
+      "map_x": 78,
+      "map_y": 36
     },
     {
       "id": "escape-room-herndon",
@@ -235,18 +261,20 @@
       "private_only": true,
       "metro_accessible": false,
       "metro_notes": "Car/Silver Line + local transit; Reston/Herndon area",
-      "price_band_pp": "$36–48",
+      "price_band_pp": "$36\u201348",
       "price_band": "30_40",
-      "difficulty_notes": "Private only. In-house builds since ~2016. Most not scary; Graverobber’s creepier (13+ suggested). Rooms: Operation Mittens, Maritime Mutiny, 8-Bit, Magician’s Workshop, Graverobber’s Dilemma, Cryptid Grove.",
+      "difficulty_notes": "Private only. In-house builds since ~2016. Most not scary; Graverobber\u2019s creepier (13+ suggested). Rooms: Operation Mittens, Maritime Mutiny, 8-Bit, Magician\u2019s Workshop, Graverobber\u2019s Dilemma, Cryptid Grove.",
       "status": "open",
       "last_verified": "2026-09-05",
       "sources": [
         "https://escaperoomherndon.com/"
       ],
       "staleness_flags": [
-        "FAQ 4-player price $38 vs some homepage $36 for 4+ — use FAQ"
+        "FAQ 4-player price $38 vs some homepage $36 for 4+ \u2014 use FAQ"
       ],
-      "curator_notes": "Indie, in-house builds since ~2016. Private only. Most not scary; Graverobber’s creepier (13+ suggested). Metro: no — car/Silver Line + local transit. $36–48 by group size (2/$48, 3/$42, 4/$38, 5+/$36 per FAQ)."
+      "curator_notes": "Indie, in-house builds since ~2016. Private only. Most not scary; Graverobber\u2019s creepier (13+ suggested). Metro: no \u2014 car/Silver Line + local transit. $36\u201348 by group size (2/$48, 3/$42, 4/$38, 5+/$36 per FAQ).",
+      "excluded": true,
+      "excluded_reason": "Outside geographic focus (DC proper + Arlington + Alexandria + North Bethesda)"
     },
     {
       "id": "cyber-raccoon",
@@ -264,7 +292,7 @@
       "scare_level": "none",
       "private_only": true,
       "metro_accessible": false,
-      "metro_notes": "Limited — East Falls Church / drive; free parking on-site",
+      "metro_notes": "Limited \u2014 East Falls Church / drive; free parking on-site",
       "price_band_pp": "~$40 (verify)",
       "price_band": "40_50",
       "difficulty_notes": "Private games. Story/tech-forward; family-friendly per site. Multi-room sets, no padlocks. Rooms: Train Robbery, Space Guard.",
@@ -275,14 +303,16 @@
         "wheretoescape ~$40"
       ],
       "staleness_flags": [
-        "exact $ band needs checkout; older reviews $26–50"
+        "exact $ band needs checkout; older reviews $26\u201350"
       ],
-      "curator_notes": "Indie. Private games. Story/tech-forward; family-friendly per site. Metro: limited — East Falls Church / drive; free parking on-site. Group-size based; third-party ~$40 typical / older reviews $26–50 — verify at book."
+      "curator_notes": "Indie. Private games. Story/tech-forward; family-friendly per site. Metro: limited \u2014 East Falls Church / drive; free parking on-site. Group-size based; third-party ~$40 typical / older reviews $26\u201350 \u2014 verify at book.",
+      "excluded": true,
+      "excluded_reason": "Outside geographic focus (DC proper + Arlington + Alexandria + North Bethesda)"
     },
     {
       "id": "bonds-fairfax",
-      "name": "Bond’s Escape Room / Entertainment Center — Fairfax",
-      "brand": "Bond’s Escape Room",
+      "name": "Bond\u2019s Escape Room / Entertainment Center \u2014 Fairfax",
+      "brand": "Bond\u2019s Escape Room",
       "ownership": "indie",
       "city": "Fairfax",
       "neighborhood": "Old Town",
@@ -298,7 +328,7 @@
       "metro_notes": "Drive / bus",
       "price_band_pp": "$34",
       "price_band": "30_40",
-      "difficulty_notes": "Private. Horror available (Molly’s Horror, Frightful Feast, etc.) + beginner rooms. ~9 escape rooms at Fairfax (+ VR / game show at center). Rebranded Bond’s Entertainment Center (2026).",
+      "difficulty_notes": "Private. Horror available (Molly\u2019s Horror, Frightful Feast, etc.) + beginner rooms. ~9 escape rooms at Fairfax (+ VR / game show at center). Rebranded Bond\u2019s Entertainment Center (2026).",
       "status": "open",
       "last_verified": "2026-09-05",
       "sources": [
@@ -306,12 +336,14 @@
         "Patch rebrand coverage"
       ],
       "staleness_flags": [],
-      "curator_notes": "Indie multi-site (largest selection locally). Private. Horror available (Molly’s Horror, Frightful Feast, etc.) + beginner rooms. Metro: no — drive / bus. Rebranded Bond’s Entertainment Center (2026). Escape rooms $34/person (site)."
+      "curator_notes": "Indie multi-site (largest selection locally). Private. Horror available (Molly\u2019s Horror, Frightful Feast, etc.) + beginner rooms. Metro: no \u2014 drive / bus. Rebranded Bond\u2019s Entertainment Center (2026). Escape rooms $34/person (site).",
+      "excluded": true,
+      "excluded_reason": "Outside geographic focus (DC proper + Arlington + Alexandria + North Bethesda)"
     },
     {
       "id": "bonds-arlington",
-      "name": "Bond’s Escape Room — Arlington",
-      "brand": "Bond’s Escape Room",
+      "name": "Bond\u2019s Escape Room \u2014 Arlington",
+      "brand": "Bond\u2019s Escape Room",
       "ownership": "indie",
       "city": "Arlington",
       "neighborhood": "Clarendon",
@@ -327,7 +359,7 @@
       "metro_notes": "Clarendon",
       "price_band_pp": "$34",
       "price_band": "30_40",
-      "difficulty_notes": "Private. Mixed scare (Sleepover / Asylum). Rooms: Death by Chocolate, Sleepover Slaughterhouse, Elven Forest, Enchanted Castle, Dr. Panic’s Asylum, Saddlewood Saloon. Strong Escape Room Arlington option.",
+      "difficulty_notes": "Private. Mixed scare (Sleepover / Asylum). Rooms: Death by Chocolate, Sleepover Slaughterhouse, Elven Forest, Enchanted Castle, Dr. Panic\u2019s Asylum, Saddlewood Saloon. Strong Escape Room Arlington option.",
       "status": "open",
       "last_verified": "2026-09-05",
       "sources": [
@@ -335,7 +367,11 @@
         "StayArlington directory"
       ],
       "staleness_flags": [],
-      "curator_notes": "Same brand. Private. Mixed scare (Sleepover / Asylum). Metro: yes — Clarendon. This is the strong Escape Room Arlington option. $34/person."
+      "curator_notes": "Same brand. Private. Mixed scare (Sleepover / Asylum). Metro: yes \u2014 Clarendon. This is the strong Escape Room Arlington option. $34/person.",
+      "excluded": false,
+      "logo": "/logos/bonds-arlington.png",
+      "map_x": 18,
+      "map_y": 52
     },
     {
       "id": "clue-iq",
@@ -353,21 +389,23 @@
       "scare_level": "mild",
       "private_only": null,
       "metro_accessible": false,
-      "metro_notes": "~45–60+ min drive from DC; MARC possible",
-      "price_band_pp": "$32–46",
+      "metro_notes": "~45\u201360+ min drive from DC; MARC possible",
+      "price_band_pp": "$32\u201346",
       "price_band": "30_40",
-      "difficulty_notes": "Enthusiast-owned; award-heavy (TERPECA nominee Crane Manor). Appointment-oriented. Mild–atmospheric scare (Crane Manor Horseman theme). Active: Operation Jingle Bells, Crane Manor 75 min, Excalibur, Blitzkrieg + mobile Ruluco.",
+      "difficulty_notes": "Enthusiast-owned; award-heavy (TERPECA nominee Crane Manor). Appointment-oriented. Mild\u2013atmospheric scare (Crane Manor Horseman theme). Active: Operation Jingle Bells, Crane Manor 75 min, Excalibur, Blitzkrieg + mobile Ruluco.",
       "status": "open",
       "last_verified": "2026-09-05",
       "sources": [
         "https://clueiq.com/"
       ],
       "staleness_flags": [],
-      "curator_notes": "Indie, enthusiast-owned; award-heavy (TERPECA nominee Crane Manor). Appointment-oriented. Mild–atmospheric scare. Metro: no — ~45–60+ min drive from DC; MARC possible. Relevant as worth-the-trip MD option. 60-min ~$32–41; 75-min ~$36–46 (birthday page tiers; +MD amusement tax)."
+      "curator_notes": "Indie, enthusiast-owned; award-heavy (TERPECA nominee Crane Manor). Appointment-oriented. Mild\u2013atmospheric scare. Metro: no \u2014 ~45\u201360+ min drive from DC; MARC possible. Relevant as worth-the-trip MD option. 60-min ~$32\u201341; 75-min ~$36\u201346 (birthday page tiers; +MD amusement tax).",
+      "excluded": true,
+      "excluded_reason": "Outside geographic focus (DC proper + Arlington + Alexandria + North Bethesda)"
     },
     {
       "id": "escapology-north-bethesda",
-      "name": "Escapology — North Bethesda",
+      "name": "Escapology \u2014 North Bethesda",
       "brand": "Escapology",
       "ownership": "franchise",
       "city": "North Bethesda",
@@ -384,7 +422,7 @@
       "metro_notes": "North Bethesda (Red)",
       "price_band_pp": "~$36",
       "price_band": "30_40",
-      "difficulty_notes": "Always private. Low–moderate scare (murder-mystery themes, not jump-scare actors). Rooms: Antidote, Mansion Murder, Budapest Express, Mayday.",
+      "difficulty_notes": "Always private. Low\u2013moderate scare (murder-mystery themes, not jump-scare actors). Rooms: Antidote, Mansion Murder, Budapest Express, Mayday.",
       "status": "open",
       "last_verified": "2026-09-05",
       "sources": [
@@ -392,13 +430,17 @@
         "Our Kids"
       ],
       "staleness_flags": [
-        "$36 from secondary (Our Kids) — verify"
+        "$36 from secondary (Our Kids) \u2014 verify"
       ],
-      "curator_notes": "Franchise chain. Always private. Low–moderate scare (murder-mystery themes, not jump-scare actors). Metro: yes — North Bethesda (Red). ~$36/player (Our Kids; verify)."
+      "curator_notes": "Franchise chain. Always private. Low\u2013moderate scare (murder-mystery themes, not jump-scare actors). Metro: yes \u2014 North Bethesda (Red). ~$36/player (Our Kids; verify).",
+      "excluded": false,
+      "logo": "/logos/escapology-north-bethesda.png",
+      "map_x": 42,
+      "map_y": 8
     },
     {
       "id": "escape-room-live-alexandria",
-      "name": "Escape Room Live — Alexandria",
+      "name": "Escape Room Live \u2014 Alexandria",
       "brand": "Escape Room Live",
       "ownership": "indie",
       "city": "Alexandria",
@@ -412,8 +454,8 @@
       "scare_level": "unknown",
       "private_only": false,
       "metro_accessible": true,
-      "metro_notes": "~15-min walk from King St–Old Town",
-      "price_band_pp": "$32–38",
+      "metro_notes": "~15-min walk from King St\u2013Old Town",
+      "price_band_pp": "$32\u201338",
       "price_band": "30_40",
       "difficulty_notes": "Shared-by-default possible (familydaysout). Strong DC-adjacent night-out pick. 4 rooms per homepage.",
       "status": "open",
@@ -423,10 +465,32 @@
         "FAQ snippets via search"
       ],
       "staleness_flags": [
-        "older LinkedIn also lists a Georgetown address shared with TEG — treat DC ERL as stale/unverified; use Alexandria",
-        "price from FAQ/third-party — confirm"
+        "older LinkedIn also lists a Georgetown address shared with TEG \u2014 treat DC ERL as stale/unverified; use Alexandria",
+        "price from FAQ/third-party \u2014 confirm"
       ],
-      "curator_notes": "Indie / regional. Shared-by-default possible (familydaysout). Metro: yes — ~15-min walk from King St–Old Town. Strong DC-adjacent night-out pick. FAQ/third-party ~$32–38 (often cited $37.99) — confirm. Note: older LinkedIn also lists a Georgetown address shared with TEG — treat DC ERL as stale/unverified; use Alexandria."
+      "curator_notes": "Indie / regional. Shared-by-default possible (familydaysout). Metro: yes \u2014 ~15-min walk from King St\u2013Old Town. Strong DC-adjacent night-out pick. FAQ/third-party ~$32\u201338 (often cited $37.99) \u2014 confirm. Note: older LinkedIn also lists a Georgetown address shared with TEG \u2014 treat DC ERL as stale/unverified; use Alexandria.",
+      "excluded": false,
+      "logo": "/logos/escape-room-live-alexandria.png",
+      "map_x": 48,
+      "map_y": 80
     }
-  ]
+  ],
+  "geo_focus": {
+    "label": "DC proper + Arlington + Alexandria + North Bethesda",
+    "excluded_ids": [
+      "bonds-fairfax",
+      "clue-iq",
+      "cyber-raccoon",
+      "escape-room-herndon",
+      "teg-tysons"
+    ],
+    "map_art": "/map/dmv-art.png",
+    "map_bounds": {
+      "north": 39.08,
+      "south": 38.78,
+      "west": -77.15,
+      "east": -76.97
+    },
+    "note": "Venue logo badges use hand-tuned map_x/map_y (%) for the illustrated art; Locate Me uses lat/lng projected into the same bounds."
+  }
 }

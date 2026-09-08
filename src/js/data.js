@@ -1,10 +1,14 @@
 import catalog from '../../data/venues.json';
 
-export const venues = catalog.venues;
+/** Active catalog: geographic focus only (excluded suburbs filtered out of UI). */
+export const venues = catalog.venues.filter((v) => !v.excluded);
+export const allVenuesIncludingExcluded = catalog.venues;
+
 export const catalogMeta = {
   generatedFrom: catalog.generated_from,
   compiled: catalog.compiled,
   geocode: catalog.geocode,
+  geoFocus: catalog.geo_focus,
 };
 
 export function getVenueById(id) {
@@ -61,4 +65,31 @@ export function filterVenues(filters) {
     }
     return true;
   });
+}
+
+/** Project WGS84 into % of illustrated map image using committed bounds. */
+export function latLngToPercent(lat, lng) {
+  const b = catalog.geo_focus?.map_bounds || {
+    north: 39.08,
+    south: 38.78,
+    west: -77.15,
+    east: -76.97,
+  };
+  const x = ((lng - b.west) / (b.east - b.west)) * 100;
+  const y = ((b.north - lat) / (b.north - b.south)) * 100;
+  return {
+    x: Math.min(98, Math.max(2, x)),
+    y: Math.min(98, Math.max(2, y)),
+  };
+}
+
+/** Prefer hand-tuned map_x/map_y; fall back to lat/lng projection. */
+export function venueMapPercent(v) {
+  if (v.map_x != null && v.map_y != null) {
+    return { x: v.map_x, y: v.map_y };
+  }
+  if (v.lat != null && v.lng != null) {
+    return latLngToPercent(v.lat, v.lng);
+  }
+  return null;
 }

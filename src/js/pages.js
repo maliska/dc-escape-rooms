@@ -6,6 +6,9 @@ import {
   priceBandLabel,
   uniqueCities,
   filterVenues,
+  venueMapPercent,
+  latLngToPercent,
+  catalogMeta,
 } from './data.js';
 import {
   loadLog,
@@ -15,18 +18,6 @@ import {
   formatBestTime,
   isVisited,
 } from './log.js';
-import L from 'leaflet';
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-
-// Fix default Leaflet marker paths under Vite
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: markerIcon2x,
-  iconUrl: markerIcon,
-  shadowUrl: markerShadow,
-});
 
 function escapeHtml(str) {
   return String(str ?? '')
@@ -78,7 +69,7 @@ export function renderHome(root) {
 
   root.innerHTML = `
     <h1 class="page-title">DMV escape rooms</h1>
-    <p class="lede">Curated starter list for DC and nearby VA/MD. Filter by area, scare, price band, and Metro access. Keep a private completion log in your browser — no accounts.</p>
+    <p class="lede">Curated list for DC proper, Arlington, Alexandria, and North Bethesda. Filter by area, scare, price band, and Metro access. Keep a private completion log in your browser — no accounts.</p>
     <form class="filters" id="filters">
       <label>City
         <select name="city">
@@ -225,34 +216,141 @@ export function renderVenue(root, id) {
 }
 
 export function renderMap(root) {
-  const withCoords = venues.filter((v) => v.lat != null && v.lng != null);
-  const without = venues.filter((v) => v.lat == null || v.lng == null);
+  const pinned = venues.filter((v) => venueMapPercent(v));
+  const art = catalogMeta.geoFocus?.map_art || '/map/dmv-art.png';
 
   root.innerHTML = `
     <h1 class="page-title">Map</h1>
-    <p class="lede">Pins use coordinates geocoded once from venue addresses via Nominatim (OSM) and committed in <code>data/venues.json</code>. OSM tiles — no API key.</p>
-    <div id="map"></div>
-    <p class="map-legend">${withCoords.length} pins · ${without.length} without coordinates${without.length ? ': ' + without.map((v) => v.name).join(', ') : ''}</p>
+    <p class="lede">Illustrated DMV map with venue logos. Pins are hand-tuned to neighborhoods on the art (Downtown, Georgetown, Arlington, Alexandria, Bethesda, Capitol Hill). Tap a logo for details. Uncertain venues appear dimmed.</p>
+    <div class="map-toolbar">
+      <button type="button" class="btn" id="locate-me">Locate me</button>
+      <button type="button" class="btn secondary" id="map-zoom-in" aria-label="Zoom in">+</button>
+      <button type="button" class="btn secondary" id="map-zoom-out" aria-label="Zoom out">−</button>
+      <button type="button" class="btn secondary" id="map-zoom-reset">Reset</button>
+      <span class="map-locate-status" id="locate-status" hidden></span>
+    </div>
+    <div class="illustrated-map-viewport" id="map-viewport">
+      <div class="illustrated-map-stage" id="map-stage" style="--map-scale: 1">
+        <img class="map-art" src="${art}" alt="Illustrated map of DC, Arlington, Alexandria, and Bethesda" draggable="false" />
+        <div class="map-pins" id="map-pins">
+          ${pinned
+            .map((v) => {
+              const { x, y } = venueMapPercent(v);
+              const uncertain = v.status === 'uncertain' || v.status === 'closed';
+              const logo = v.logo || `/logos/${v.id}.png`;
+              return `
+              <a class="map-pin${uncertain ? ' uncertain' : ''}"
+                 href="#/venue/${escapeHtml(v.id)}"
+                 style="left:${x}%; top:${y}%"
+                 title="${escapeHtml(v.name)}"
+                 aria-label="${escapeHtml(v.name)}">
+                <img src="${escapeHtml(logo)}" alt="" loading="lazy" />
+                <span class="map-pin-label">${escapeHtml(v.brand || v.name)}</span>
+              </a>`;
+            })
+            .join('')}
+        </div>
+        <div class="you-marker" id="you-marker" hidden>
+          <span class="you-dot"></span>
+          <span class="you-label">You</span>
+        </div>
+      </div>
+    </div>
+    <p class="map-legend">${pinned.length} venues on map · scroll / pinch or use +/− to zoom · logos are trademarks of their owners</p>
   `;
 
-  const map = L.map('map').setView([38.9, -77.1], 10);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  }).addTo(map);
+  const viewport = root.querySelector('#map-viewport');
+  const stage = root.querySelector('#map-stage');
+  const you = root.querySelector('#you-marker');
+  const statusEl = root.querySelector('#locate-status');
+  let scale = 1;
 
-  const bounds = [];
-  for (const v of withCoords) {
-    const marker = L.marker([v.lat, v.lng]).addTo(map);
-    marker.bindPopup(
-      `<strong><a href="#/venue/${escapeHtml(v.id)}">${escapeHtml(v.name)}</a></strong><br/>${escapeHtml(locationLabel(v))}<br/>${statusBadge(v.status)}`
+  const applyScale = () => {
+    stage.style.setProperty('--map-scale', String(scale));
+    stage.style.width = `${scale * 100}%`;
+  };
+
+  root.querySelector('#map-zoom-in').addEventListener('click', () => {
+    scale = Math.min(3, scale + 0.25);
+    applyScale();
+  });
+  root.querySelector('#map-zoom-out').addEventListener('click', () => {
+    scale = Math.max(1, scale - 0.25);
+    applyScale();
+  });
+  root.querySelector('#map-zoom-reset').addEventListener('click', () => {
+    scale = 1;
+    applyScale();
+    viewport.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
+  });
+
+  // Basic touch drag-pan when zoomed (in addition to native overflow scroll)
+  let dragging = false;
+  let startX = 0;
+  let startY = 0;
+  let scrollLeft = 0;
+  let scrollTop = 0;
+  viewport.addEventListener('pointerdown', (e) => {
+    if (e.target.closest('.map-pin')) return;
+    dragging = true;
+    viewport.classList.add('dragging');
+    startX = e.clientX;
+    startY = e.clientY;
+    scrollLeft = viewport.scrollLeft;
+    scrollTop = viewport.scrollTop;
+    viewport.setPointerCapture?.(e.pointerId);
+  });
+  viewport.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    viewport.scrollLeft = scrollLeft - (e.clientX - startX);
+    viewport.scrollTop = scrollTop - (e.clientY - startY);
+  });
+  const endDrag = () => {
+    dragging = false;
+    viewport.classList.remove('dragging');
+  };
+  viewport.addEventListener('pointerup', endDrag);
+  viewport.addEventListener('pointercancel', endDrag);
+
+  root.querySelector('#locate-me').addEventListener('click', () => {
+    statusEl.hidden = false;
+    statusEl.textContent = 'Locating…';
+    if (!navigator.geolocation) {
+      statusEl.textContent = 'Geolocation not supported in this browser.';
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        const { x, y } = latLngToPercent(latitude, longitude);
+        you.hidden = false;
+        you.style.left = `${x}%`;
+        you.style.top = `${y}%`;
+        const inBounds =
+          latitude <= 39.08 &&
+          latitude >= 38.78 &&
+          longitude >= -77.15 &&
+          longitude <= -76.97;
+        statusEl.textContent = inBounds
+          ? 'You are on the map.'
+          : 'Located — outside the illustrated focus area (marker clamped to edge).';
+        // Scroll marker into view roughly
+        const rect = stage.getBoundingClientRect();
+        viewport.scrollTo({
+          left: (x / 100) * stage.scrollWidth - viewport.clientWidth / 2,
+          top: (y / 100) * stage.scrollHeight - viewport.clientHeight / 2,
+          behavior: 'smooth',
+        });
+      },
+      (err) => {
+        statusEl.textContent =
+          err.code === 1
+            ? 'Location permission denied.'
+            : 'Could not get your location.';
+      },
+      { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
     );
-    bounds.push([v.lat, v.lng]);
-  }
-  if (bounds.length) map.fitBounds(bounds, { padding: [30, 30] });
-
-  // invalidate size after layout
-  setTimeout(() => map.invalidateSize(), 50);
+  });
 }
 
 export function renderLog(root) {

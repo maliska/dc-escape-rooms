@@ -1,8 +1,6 @@
 # DMV Escape Rooms
 
-Open-source starter directory of escape rooms in **Washington, DC** and nearby **VA/MD** suburbs, plus a **private** personal completion log (checklist, best times, notes) stored in your browser only.
-
-V1 is intentionally small: filterable list, OSM map pins, venue detail pages with curator notes, and localStorage "My log." No accounts, no public leaderboards, no live booking inventory.
+Open-source directory of escape rooms in Washington DC proper, Arlington, Alexandria, and North Bethesda, plus a private personal completion log in your browser.
 
 ## How to run
 
@@ -22,32 +20,29 @@ npm run preview
 ## Stack
 
 - Vite + vanilla JavaScript (ES modules)
-- Leaflet + OpenStreetMap tiles (no API key)
-- Hash routing (`#/`, `#/map`, `#/venue/:id`, `#/log`)
+- Custom illustrated map (public/map/dmv-art.png) with logo badges
+- Hash routing for home, map, venue detail, and log
 
 ## Data provenance
 
-- Seed list and schema: `docs/dmv-escape-rooms-v1.md` (compiled 2026-09-05).
-- Structured catalog: `data/venues.json` — converted from that table; **no invented facts**.
-- **Escape Artist DC** is kept as `status: "uncertain"` (site 404 / Morty temporarily closed) and is hidden by the default "Open only" filter, but still appears when status = All / Uncertain (with badge).
-- Coordinates: geocoded once with Nominatim (OpenStreetMap) on 2026-09-07 and **committed** in `venues.json`. User-Agent documented in the JSON `geocode` block. If a venue cannot be geocoded, it stays in the list without a map pin.
-- Prices are planning bands only — they move with group size, daypart, and promos.
+- Seed list: docs/dmv-escape-rooms-v1.md
+- Catalog: data/venues.json (no invented facts)
+- Geographic focus: DC proper + Arlington + Alexandria + North Bethesda
+- Out-of-focus venues remain in JSON with excluded true and are filtered from the UI
+- Escape Artist DC is status uncertain (dimmed on map; hidden by default Open only filter)
+- Coordinates from Nominatim 2026-09-07; map badges use hand-tuned map_x/map_y; Locate me projects lat/lng into the same bounds
 
-## Features (V1)
+## Features
 
-1. **Home / list** — filters for city, neighborhood text, scare level, coarse price band, Metro access, and status (default hides closed/uncertain).
-2. **Map** — Leaflet + OSM pins for venues with lat/lng.
-3. **Venue detail** — curator notes from the seed Notes column, links, and inline private log fields.
-4. **My log** — visited checklist, personal best times, and notes in localStorage only.
+1. Home/list with filters
+2. Illustrated map with venue logo badges, Locate me, mobile pan/zoom
+3. Venue detail with curator notes and private log fields
+4. My log in localStorage only
 
-## Out of scope (V1)
+## Logos and trademarks
 
-- Global / friend leaderboards or public best times
-- Live inventory / real-time availability
-- Accounts, auth, or cloud sync
-- Monetization / paid map keys
-- Hosting (TBD — static `dist/` is fine for any static host)
+Venue logos under public/logos/ are from public brand assets or favicons where available, or monogram fallbacks. All logos and brand names are trademarks of their respective owners. This project is an unofficial fan directory and is not affiliated with or endorsed by any venue.
 
 ## License
 
-MIT — see LICENSE.
+MIT — see LICENSE. Third-party logos are not covered by the MIT license.
