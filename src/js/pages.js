@@ -552,13 +552,28 @@ export function renderLeaderboardDemo(root) {
   const params = new URLSearchParams(location.search);
   const venueFilter = params.get('venue') || '';
   const period = params.get('period') || 'all';
+  const viewRaw = (params.get('view') || 'teams').toLowerCase();
+  const view = viewRaw === 'individuals' ? 'individuals' : 'teams';
 
   const venues = demoBoard.venues || [];
-  let rows = (demoBoard.clears || []).filter((c) => c.escaped !== false);
+  const source =
+    view === 'individuals'
+      ? demoBoard.individuals || []
+      : demoBoard.clears || [];
+
+  let rows = source.filter((c) => c.escaped !== false);
   if (venueFilter) rows = rows.filter((c) => c.venue === venueFilter);
   if (period === '30') rows = rows.filter((c) => daysAgo(c.date) <= 30);
 
   rows = [...rows].sort((a, b) => a.time_seconds - b.time_seconds);
+
+  const nameKey = view === 'individuals' ? 'name' : 'team';
+  const nameHeader = view === 'individuals' ? 'Player' : 'Team';
+  const emptyLabel = view === 'individuals' ? 'No individual clears match these filters.' : 'No clears match these filters.';
+  const countLabel =
+    view === 'individuals'
+      ? `${rows.length} individual escape${rows.length === 1 ? '' : 's'} · ranked by clear time`
+      : `${rows.length} team escape${rows.length === 1 ? '' : 's'} · ranked by clear time`;
 
   root.innerHTML = `
     <div class="demo-banner" role="status">
@@ -566,7 +581,12 @@ export function renderLeaderboardDemo(root) {
     </div>
     <h1 class="page-title">Leaderboard (demo)</h1>
     <p class="lede">Synthetic sample clears for mock venues. Private log and real directory are unchanged.</p>
+    <div class="lb-view-toggle" role="tablist" aria-label="Leaderboard view">
+      <button type="button" role="tab" class="lb-view-btn${view === 'teams' ? ' active' : ''}" data-view="teams" aria-selected="${view === 'teams'}">Teams</button>
+      <button type="button" role="tab" class="lb-view-btn${view === 'individuals' ? ' active' : ''}" data-view="individuals" aria-selected="${view === 'individuals'}">Individuals</button>
+    </div>
     <form class="filters" id="lb-filters">
+      <input type="hidden" name="view" value="${escapeHtml(view)}" />
       <label>Venue
         <select name="venue">
           <option value="">All venues</option>
@@ -582,18 +602,17 @@ export function renderLeaderboardDemo(root) {
         </select>
       </label>
     </form>
-    <p class="results-meta">${rows.length} escape${rows.length === 1 ? '' : 's'} · ranked by clear time</p>
+    <p class="results-meta">${countLabel}</p>
     <div class="lb-table-wrap">
       <table class="lb-table">
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Team</th>
+            <th scope="col">${nameHeader}</th>
             <th scope="col">Venue</th>
             <th scope="col">Room</th>
             <th scope="col">Time</th>
             <th scope="col">Date</th>
-            <th scope="col">Escaped</th>
           </tr>
         </thead>
         <tbody>
@@ -604,16 +623,15 @@ export function renderLeaderboardDemo(root) {
                     (c, i) => `
             <tr>
               <td class="lb-rank">${i + 1}</td>
-              <td>${escapeHtml(c.team)}</td>
+              <td>${escapeHtml(c[nameKey])}</td>
               <td>${escapeHtml(c.venue)}</td>
               <td>${escapeHtml(c.room)}</td>
               <td class="lb-time">${formatClearTime(c.time_seconds)}</td>
               <td>${escapeHtml(c.date)}</td>
-              <td><span class="badge open">Yes</span></td>
             </tr>`
                   )
                   .join('')
-              : `<tr><td colspan="7" class="empty">No clears match these filters.</td></tr>`
+              : `<tr><td colspan="6" class="empty">${emptyLabel}</td></tr>`
           }
         </tbody>
       </table>
@@ -621,22 +639,33 @@ export function renderLeaderboardDemo(root) {
     <p class="lb-demo-note meta">Interested in a real feed from your venue? Ask Joel / Side Project Manager.</p>
   `;
 
-  const form = root.querySelector('#lb-filters');
-  const apply = () => {
-    const fd = new FormData(form);
+  const pushFilters = (nextView, venue, periodVal) => {
     const q = new URLSearchParams();
-    const v = fd.get('venue');
-    const p = fd.get('period');
-    if (v) q.set('venue', v);
-    if (p && p !== 'all') q.set('period', p);
+    q.set('view', nextView === 'individuals' ? 'individuals' : 'teams');
+    if (venue) q.set('venue', venue);
+    if (periodVal && periodVal !== 'all') q.set('period', periodVal);
     const qs = q.toString();
     const url = '/leaderboard-demo' + (qs ? '?' + qs : '');
     history.pushState(null, '', url);
     window.dispatchEvent(new PopStateEvent('popstate'));
   };
+
+  const form = root.querySelector('#lb-filters');
+  const apply = () => {
+    const fd = new FormData(form);
+    pushFilters(fd.get('view') || 'teams', fd.get('venue'), fd.get('period'));
+  };
   form.addEventListener('change', apply);
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     apply();
+  });
+
+  root.querySelectorAll('.lb-view-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const next = btn.getAttribute('data-view') || 'teams';
+      const fd = new FormData(form);
+      pushFilters(next, fd.get('venue'), fd.get('period'));
+    });
   });
 }

@@ -1,6 +1,6 @@
 {
   "demo": true,
-  "disclaimer": "Demo — example data only. Not real venues or times.",
+  "disclaimer": "Demo \u2014 example data only. Not real venues or times.",
   "venues": [
     "Capitol Lock Co.",
     "Foggy Bottom Mysteries",
@@ -151,6 +151,152 @@
       "room": "Circle Cipher",
       "time_seconds": 2550,
       "date": "2026-05-30",
+      "escaped": true
+    }
+  ],
+  "individuals": [
+    {
+      "name": "Mira",
+      "venue": "Dupont Cipher Club",
+      "room": "The Embassy Code",
+      "time_seconds": 1588,
+      "date": "2026-09-02",
+      "escaped": true
+    },
+    {
+      "name": "jax_key",
+      "venue": "Capitol Lock Co.",
+      "room": "Senate Secrets",
+      "time_seconds": 1720,
+      "date": "2026-08-29",
+      "escaped": true
+    },
+    {
+      "name": "Nova",
+      "venue": "Foggy Bottom Mysteries",
+      "room": "Blue Line Vanish",
+      "time_seconds": 1811,
+      "date": "2026-09-04",
+      "escaped": true
+    },
+    {
+      "name": "Rook",
+      "venue": "Navy Yard Vault",
+      "room": "Dry Dock Heist",
+      "time_seconds": 1904,
+      "date": "2026-08-15",
+      "escaped": true
+    },
+    {
+      "name": "pixel_p",
+      "venue": "Clarendon Cryptids",
+      "room": "Courthouse Crypt",
+      "time_seconds": 1866,
+      "date": "2026-09-03",
+      "escaped": true
+    },
+    {
+      "name": "Sable",
+      "venue": "Dupont Cipher Club",
+      "room": "Circle Cipher",
+      "time_seconds": 1699,
+      "date": "2026-08-20",
+      "escaped": true
+    },
+    {
+      "name": "Theo",
+      "venue": "Capitol Lock Co.",
+      "room": "Rotunda Riddle",
+      "time_seconds": 2240,
+      "date": "2026-07-08",
+      "escaped": true
+    },
+    {
+      "name": "wisp42",
+      "venue": "Foggy Bottom Mysteries",
+      "room": "Underground Lab",
+      "time_seconds": 2010,
+      "date": "2026-08-24",
+      "escaped": true
+    },
+    {
+      "name": "Kai",
+      "venue": "Navy Yard Vault",
+      "room": "Shipyard Ghost",
+      "time_seconds": 2388,
+      "date": "2026-06-19",
+      "escaped": true
+    },
+    {
+      "name": "Lumen",
+      "venue": "Clarendon Cryptids",
+      "room": "Potomac Beast",
+      "time_seconds": 2144,
+      "date": "2026-08-06",
+      "escaped": true
+    },
+    {
+      "name": "ember_q",
+      "venue": "Dupont Cipher Club",
+      "room": "The Embassy Code",
+      "time_seconds": 1955,
+      "date": "2026-07-30",
+      "escaped": true
+    },
+    {
+      "name": "Nico",
+      "venue": "Capitol Lock Co.",
+      "room": "Senate Secrets",
+      "time_seconds": 2499,
+      "date": "2026-06-21",
+      "escaped": true
+    },
+    {
+      "name": "quill",
+      "venue": "Foggy Bottom Mysteries",
+      "room": "Blue Line Vanish",
+      "time_seconds": 1677,
+      "date": "2026-09-06",
+      "escaped": true
+    },
+    {
+      "name": "Ash",
+      "venue": "Navy Yard Vault",
+      "room": "Dry Dock Heist",
+      "time_seconds": 2112,
+      "date": "2026-08-10",
+      "escaped": true
+    },
+    {
+      "name": "reed_x",
+      "venue": "Clarendon Cryptids",
+      "room": "Courthouse Crypt",
+      "time_seconds": 2033,
+      "date": "2026-07-22",
+      "escaped": true
+    },
+    {
+      "name": "Ivy",
+      "venue": "Dupont Cipher Club",
+      "room": "Circle Cipher",
+      "time_seconds": 2420,
+      "date": "2026-05-28",
+      "escaped": true
+    },
+    {
+      "name": "bolt9",
+      "venue": "Capitol Lock Co.",
+      "room": "Rotunda Riddle",
+      "time_seconds": 1788,
+      "date": "2026-08-31",
+      "escaped": true
+    },
+    {
+      "name": "Zara",
+      "venue": "Foggy Bottom Mysteries",
+      "room": "Underground Lab",
+      "time_seconds": 2295,
+      "date": "2026-04-25",
       "escaped": true
     }
   ]
