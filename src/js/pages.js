@@ -47,7 +47,7 @@ function venueCard(v) {
         ${metro}
         ${visited}
       </div>
-      <h2><a href="#/venue/${escapeHtml(v.id)}">${escapeHtml(v.name)}</a></h2>
+      <h2><a href="/venue/${escapeHtml(v.id)}">${escapeHtml(v.name)}</a></h2>
       <div class="meta">${escapeHtml(locationLabel(v))}</div>
       <div class="meta">${escapeHtml(v.price_band_pp || 'Price TBD')} · ~${v.approx_rooms ?? '?'} rooms</div>
     </article>
@@ -55,7 +55,7 @@ function venueCard(v) {
 }
 
 export function renderHome(root) {
-  const params = new URLSearchParams((location.hash.split('?')[1] || ''));
+  const params = new URLSearchParams(location.search);
   const filters = {
     city: params.get('city') || '',
     neighborhood: params.get('neighborhood') || '',
@@ -129,7 +129,10 @@ export function renderHome(root) {
     }
     // normalize status default
     if (!q.get('status')) q.set('status', 'open_only');
-    location.hash = '#/?' + q.toString();
+    const qs = q.toString();
+    const url = '/' + (qs ? '?' + qs : '');
+    history.pushState(null, '', url);
+    window.dispatchEvent(new PopStateEvent('popstate'));
   };
   form.addEventListener('change', apply);
   form.addEventListener('submit', (e) => {
@@ -146,7 +149,7 @@ export function renderHome(root) {
 export function renderVenue(root, id) {
   const v = getVenueById(id);
   if (!v) {
-    root.innerHTML = `<p class="empty">Venue not found. <a href="#/">Back to list</a></p>`;
+    root.innerHTML = `<p class="empty">Venue not found. <a href="/">Back to list</a></p>`;
     return;
   }
   const log = loadLog();
@@ -156,7 +159,7 @@ export function renderVenue(root, id) {
   const bestMins = bestSec != null ? (bestSec / 60).toFixed(bestSec % 60 === 0 ? 0 : 1) : '';
 
   root.innerHTML = `
-    <p><a href="#/">← All venues</a></p>
+    <p><a href="/">← All venues</a></p>
     <article class="detail">
       <div class="badges">
         ${statusBadge(v.status)}
@@ -180,7 +183,7 @@ export function renderVenue(root, id) {
       <div class="actions">
         <a class="btn" href="${escapeHtml(v.website_url)}" target="_blank" rel="noopener noreferrer">Website</a>
         ${v.booking_url ? `<a class="btn secondary" href="${escapeHtml(v.booking_url)}" target="_blank" rel="noopener noreferrer">Book</a>` : ''}
-        <a class="btn secondary" href="#/log">My log</a>
+        <a class="btn secondary" href="/log">My log</a>
       </div>
       <h2 style="margin-top:1.5rem">My log (private)</h2>
       <p class="meta">Stored only in this browser’s localStorage. Not uploaded anywhere.</p>
@@ -287,7 +290,7 @@ export function renderMap(root) {
                 const logo = v.logo || `/logos/${v.id}.png`;
                 return `
                 <a class="map-pin${uncertain ? ' uncertain' : ''}${badge ? ' has-badge' : ''}"
-                   href="#/venue/${escapeHtml(v.id)}"
+                   href="/venue/${escapeHtml(v.id)}"
                    style="left:${x}%; top:${y}%"
                    title="${escapeHtml(v.name)}"
                    aria-label="${escapeHtml(v.name)}">
@@ -480,7 +483,7 @@ export function renderLog(root) {
         const notes = log.venue_notes[v.id] || '';
         return `
           <div class="log-item" data-id="${escapeHtml(v.id)}">
-            <h3><a href="#/venue/${escapeHtml(v.id)}">${escapeHtml(v.name)}</a></h3>
+            <h3><a href="/venue/${escapeHtml(v.id)}">${escapeHtml(v.name)}</a></h3>
             <div class="meta">${escapeHtml(locationLabel(v))} · ${statusBadge(v.status)}</div>
             <form class="log-form quick-log">
               <label style="display:flex;align-items:center;gap:0.5rem;margin-top:0.5rem">
@@ -546,7 +549,7 @@ function daysAgo(isoDate) {
 
 /** Synthetic demo leaderboard — not linked from nav; fake venues only. */
 export function renderLeaderboardDemo(root) {
-  const params = new URLSearchParams(location.hash.split('?')[1] || '');
+  const params = new URLSearchParams(location.search);
   const venueFilter = params.get('venue') || '';
   const period = params.get('period') || 'all';
 
@@ -627,7 +630,9 @@ export function renderLeaderboardDemo(root) {
     if (v) q.set('venue', v);
     if (p && p !== 'all') q.set('period', p);
     const qs = q.toString();
-    location.hash = '#/leaderboard-demo' + (qs ? '?' + qs : '');
+    const url = '/leaderboard-demo' + (qs ? '?' + qs : '');
+    history.pushState(null, '', url);
+    window.dispatchEvent(new PopStateEvent('popstate'));
   };
   form.addEventListener('change', apply);
   form.addEventListener('submit', (e) => {
