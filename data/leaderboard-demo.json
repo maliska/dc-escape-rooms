@@ -156,7 +156,7 @@
   ],
   "individuals": [
     {
-      "name": "Mira",
+      "name": "Mira Chen",
       "venue": "Dupont Cipher Club",
       "room": "The Embassy Code",
       "time_seconds": 1588,
@@ -164,7 +164,7 @@
       "escaped": true
     },
     {
-      "name": "jax_key",
+      "name": "Jax Key",
       "venue": "Capitol Lock Co.",
       "room": "Senate Secrets",
       "time_seconds": 1720,
@@ -172,7 +172,7 @@
       "escaped": true
     },
     {
-      "name": "Nova",
+      "name": "Nova Reyes",
       "venue": "Foggy Bottom Mysteries",
       "room": "Blue Line Vanish",
       "time_seconds": 1811,
@@ -180,7 +180,7 @@
       "escaped": true
     },
     {
-      "name": "Rook",
+      "name": "Rook Daniels",
       "venue": "Navy Yard Vault",
       "room": "Dry Dock Heist",
       "time_seconds": 1904,
@@ -188,7 +188,7 @@
       "escaped": true
     },
     {
-      "name": "pixel_p",
+      "name": "Pixel P",
       "venue": "Clarendon Cryptids",
       "room": "Courthouse Crypt",
       "time_seconds": 1866,
@@ -196,7 +196,7 @@
       "escaped": true
     },
     {
-      "name": "Sable",
+      "name": "Sable Ortiz",
       "venue": "Dupont Cipher Club",
       "room": "Circle Cipher",
       "time_seconds": 1699,
@@ -204,7 +204,7 @@
       "escaped": true
     },
     {
-      "name": "Theo",
+      "name": "Theo Park",
       "venue": "Capitol Lock Co.",
       "room": "Rotunda Riddle",
       "time_seconds": 2240,
@@ -212,7 +212,7 @@
       "escaped": true
     },
     {
-      "name": "wisp42",
+      "name": "Wisp",
       "venue": "Foggy Bottom Mysteries",
       "room": "Underground Lab",
       "time_seconds": 2010,
@@ -220,7 +220,7 @@
       "escaped": true
     },
     {
-      "name": "Kai",
+      "name": "Kai Nakamura",
       "venue": "Navy Yard Vault",
       "room": "Shipyard Ghost",
       "time_seconds": 2388,
@@ -236,7 +236,7 @@
       "escaped": true
     },
     {
-      "name": "ember_q",
+      "name": "Ember Q",
       "venue": "Dupont Cipher Club",
       "room": "The Embassy Code",
       "time_seconds": 1955,
@@ -244,7 +244,7 @@
       "escaped": true
     },
     {
-      "name": "Nico",
+      "name": "Nico Alvarez",
       "venue": "Capitol Lock Co.",
       "room": "Senate Secrets",
       "time_seconds": 2499,
@@ -252,7 +252,7 @@
       "escaped": true
     },
     {
-      "name": "quill",
+      "name": "Quill",
       "venue": "Foggy Bottom Mysteries",
       "room": "Blue Line Vanish",
       "time_seconds": 1677,
@@ -260,7 +260,7 @@
       "escaped": true
     },
     {
-      "name": "Ash",
+      "name": "Ash Bennett",
       "venue": "Navy Yard Vault",
       "room": "Dry Dock Heist",
       "time_seconds": 2112,
@@ -268,7 +268,7 @@
       "escaped": true
     },
     {
-      "name": "reed_x",
+      "name": "Reed X",
       "venue": "Clarendon Cryptids",
       "room": "Courthouse Crypt",
       "time_seconds": 2033,
@@ -276,7 +276,7 @@
       "escaped": true
     },
     {
-      "name": "Ivy",
+      "name": "Ivy Santos",
       "venue": "Dupont Cipher Club",
       "room": "Circle Cipher",
       "time_seconds": 2420,
@@ -284,7 +284,7 @@
       "escaped": true
     },
     {
-      "name": "bolt9",
+      "name": "Bolt",
       "venue": "Capitol Lock Co.",
       "room": "Rotunda Riddle",
       "time_seconds": 1788,
@@ -292,7 +292,7 @@
       "escaped": true
     },
     {
-      "name": "Zara",
+      "name": "Zara Khan",
       "venue": "Foggy Bottom Mysteries",
       "room": "Underground Lab",
       "time_seconds": 2295,
