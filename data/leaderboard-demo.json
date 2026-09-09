@@ -1,0 +1,157 @@
+{
+  "demo": true,
+  "disclaimer": "Demo — example data only. Not real venues or times.",
+  "venues": [
+    "Capitol Lock Co.",
+    "Foggy Bottom Mysteries",
+    "Dupont Cipher Club",
+    "Navy Yard Vault",
+    "Clarendon Cryptids"
+  ],
+  "clears": [
+    {
+      "team": "Keystone Crew",
+      "venue": "Capitol Lock Co.",
+      "room": "Senate Secrets",
+      "time_seconds": 1842,
+      "date": "2026-08-28",
+      "escaped": true
+    },
+    {
+      "team": "Puzzle Piranhas",
+      "venue": "Foggy Bottom Mysteries",
+      "room": "Underground Lab",
+      "time_seconds": 2105,
+      "date": "2026-08-22",
+      "escaped": true
+    },
+    {
+      "team": "Cipher Sisters",
+      "venue": "Dupont Cipher Club",
+      "room": "The Embassy Code",
+      "time_seconds": 1650,
+      "date": "2026-09-01",
+      "escaped": true
+    },
+    {
+      "team": "Vault Vipers",
+      "venue": "Navy Yard Vault",
+      "room": "Dry Dock Heist",
+      "time_seconds": 1988,
+      "date": "2026-07-14",
+      "escaped": true
+    },
+    {
+      "team": "Cryptid Chasers",
+      "venue": "Clarendon Cryptids",
+      "room": "Potomac Beast",
+      "time_seconds": 2290,
+      "date": "2026-08-05",
+      "escaped": true
+    },
+    {
+      "team": "Lockpick League",
+      "venue": "Capitol Lock Co.",
+      "room": "Rotunda Riddle",
+      "time_seconds": 2412,
+      "date": "2026-06-18",
+      "escaped": true
+    },
+    {
+      "team": "Metro Minders",
+      "venue": "Foggy Bottom Mysteries",
+      "room": "Blue Line Vanish",
+      "time_seconds": 1764,
+      "date": "2026-08-30",
+      "escaped": true
+    },
+    {
+      "team": "Embassy Escapers",
+      "venue": "Dupont Cipher Club",
+      "room": "The Embassy Code",
+      "time_seconds": 2033,
+      "date": "2026-07-29",
+      "escaped": true
+    },
+    {
+      "team": "Yardbirds",
+      "venue": "Navy Yard Vault",
+      "room": "Shipyard Ghost",
+      "time_seconds": 2599,
+      "date": "2026-05-12",
+      "escaped": true
+    },
+    {
+      "team": "Ballston Breakers",
+      "venue": "Clarendon Cryptids",
+      "room": "Courthouse Crypt",
+      "time_seconds": 1920,
+      "date": "2026-09-03",
+      "escaped": true
+    },
+    {
+      "team": "Anacostia Agents",
+      "venue": "Navy Yard Vault",
+      "room": "Dry Dock Heist",
+      "time_seconds": 2215,
+      "date": "2026-08-11",
+      "escaped": true
+    },
+    {
+      "team": "Foggy Five",
+      "venue": "Foggy Bottom Mysteries",
+      "room": "Underground Lab",
+      "time_seconds": 2488,
+      "date": "2026-04-22",
+      "escaped": true
+    },
+    {
+      "team": "Circle Clues",
+      "venue": "Dupont Cipher Club",
+      "room": "Circle Cipher",
+      "time_seconds": 1712,
+      "date": "2026-08-19",
+      "escaped": true
+    },
+    {
+      "team": "Monument Miners",
+      "venue": "Capitol Lock Co.",
+      "room": "Senate Secrets",
+      "time_seconds": 2680,
+      "date": "2026-07-02",
+      "escaped": true
+    },
+    {
+      "team": "Rosslyn Raiders",
+      "venue": "Clarendon Cryptids",
+      "room": "Potomac Beast",
+      "time_seconds": 2055,
+      "date": "2026-06-27",
+      "escaped": true
+    },
+    {
+      "team": "Potomac Puzzlers",
+      "venue": "Foggy Bottom Mysteries",
+      "room": "Blue Line Vanish",
+      "time_seconds": 1899,
+      "date": "2026-09-05",
+      "escaped": true
+    },
+    {
+      "team": "Navy Night Owls",
+      "venue": "Navy Yard Vault",
+      "room": "Shipyard Ghost",
+      "time_seconds": 2344,
+      "date": "2026-08-08",
+      "escaped": true
+    },
+    {
+      "team": "Adams Morgan Aces",
+      "venue": "Dupont Cipher Club",
+      "room": "Circle Cipher",
+      "time_seconds": 2550,
+      "date": "2026-05-30",
+      "escaped": true
+    }
+  ]
+}

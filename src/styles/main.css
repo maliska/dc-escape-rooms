@@ -526,3 +526,85 @@ main {
   color: var(--muted);
   font-size: 0.85rem;
 }
+
+/* Synthetic leaderboard demo */
+.demo-banner {
+  background: linear-gradient(90deg, #3a2a10, #4a3518);
+  border: 1px solid #7a6230;
+  color: var(--warn);
+  border-radius: var(--radius);
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.lb-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.lb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  min-width: 640px;
+}
+
+.lb-table th,
+.lb-table td {
+  padding: 0.65rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.lb-table th {
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+  background: var(--surface-2);
+  position: sticky;
+  top: 0;
+}
+
+.lb-table tbody tr:hover {
+  background: rgba(91, 159, 212, 0.08);
+}
+
+.lb-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.lb-rank {
+  color: var(--muted);
+  font-weight: 700;
+  width: 2.5rem;
+}
+
+.lb-time {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--accent-2);
+}
+
+.lb-demo-note {
+  margin-top: 1.25rem;
+  max-width: 36rem;
+}
+
+@media (max-width: 639px) {
+  .lb-table {
+    font-size: 0.85rem;
+  }
+  .lb-table th,
+  .lb-table td {
+    padding: 0.55rem 0.5rem;
+  }
+}

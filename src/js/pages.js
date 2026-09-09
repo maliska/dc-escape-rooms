@@ -18,6 +18,8 @@ import {
   isVisited,
 } from './log.js';
 
+import demoBoard from '../../data/leaderboard-demo.json';
+
 function escapeHtml(str) {
   return String(str ?? '')
     .replace(/&/g, '&amp;')
@@ -525,5 +527,111 @@ export function renderLog(root) {
       clearLog();
       renderLog(root);
     }
+  });
+}
+
+
+function formatClearTime(seconds) {
+  const s = Math.max(0, Math.floor(Number(seconds) || 0));
+  const m = Math.floor(s / 60);
+  const r = s % 60;
+  return `${m}:${String(r).padStart(2, '0')}`;
+}
+
+function daysAgo(isoDate) {
+  const d = new Date(`${isoDate}T12:00:00Z`);
+  const now = new Date();
+  return (now - d) / (1000 * 60 * 60 * 24);
+}
+
+/** Synthetic demo leaderboard — not linked from nav; fake venues only. */
+export function renderLeaderboardDemo(root) {
+  const params = new URLSearchParams(location.hash.split('?')[1] || '');
+  const venueFilter = params.get('venue') || '';
+  const period = params.get('period') || 'all';
+
+  const venues = demoBoard.venues || [];
+  let rows = (demoBoard.clears || []).filter((c) => c.escaped !== false);
+  if (venueFilter) rows = rows.filter((c) => c.venue === venueFilter);
+  if (period === '30') rows = rows.filter((c) => daysAgo(c.date) <= 30);
+
+  rows = [...rows].sort((a, b) => a.time_seconds - b.time_seconds);
+
+  root.innerHTML = `
+    <div class="demo-banner" role="status">
+      <strong>Demo — example data only. Not real venues or times.</strong>
+    </div>
+    <h1 class="page-title">Leaderboard (demo)</h1>
+    <p class="lede">Synthetic sample clears for mock venues. Private log and real directory are unchanged.</p>
+    <form class="filters" id="lb-filters">
+      <label>Venue
+        <select name="venue">
+          <option value="">All venues</option>
+          ${venues.map((v) =>
+            `<option value="${escapeHtml(v)}" ${venueFilter === v ? 'selected' : ''}>${escapeHtml(v)}</option>`
+          ).join('')}
+        </select>
+      </label>
+      <label>Period
+        <select name="period">
+          <option value="all" ${period === 'all' ? 'selected' : ''}>All time</option>
+          <option value="30" ${period === '30' ? 'selected' : ''}>Last 30 days</option>
+        </select>
+      </label>
+    </form>
+    <p class="results-meta">${rows.length} escape${rows.length === 1 ? '' : 's'} · ranked by clear time</p>
+    <div class="lb-table-wrap">
+      <table class="lb-table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Team</th>
+            <th scope="col">Venue</th>
+            <th scope="col">Room</th>
+            <th scope="col">Time</th>
+            <th scope="col">Date</th>
+            <th scope="col">Escaped</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${
+            rows.length
+              ? rows
+                  .map(
+                    (c, i) => `
+            <tr>
+              <td class="lb-rank">${i + 1}</td>
+              <td>${escapeHtml(c.team)}</td>
+              <td>${escapeHtml(c.venue)}</td>
+              <td>${escapeHtml(c.room)}</td>
+              <td class="lb-time">${formatClearTime(c.time_seconds)}</td>
+              <td>${escapeHtml(c.date)}</td>
+              <td><span class="badge open">Yes</span></td>
+            </tr>`
+                  )
+                  .join('')
+              : `<tr><td colspan="7" class="empty">No clears match these filters.</td></tr>`
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="lb-demo-note meta">Interested in a real feed from your venue? Ask Joel / Side Project Manager.</p>
+  `;
+
+  const form = root.querySelector('#lb-filters');
+  const apply = () => {
+    const fd = new FormData(form);
+    const q = new URLSearchParams();
+    const v = fd.get('venue');
+    const p = fd.get('period');
+    if (v) q.set('venue', v);
+    if (p && p !== 'all') q.set('period', p);
+    const qs = q.toString();
+    location.hash = '#/leaderboard-demo' + (qs ? '?' + qs : '');
+  };
+  form.addEventListener('change', apply);
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    apply();
   });
 }

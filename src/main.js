@@ -1,5 +1,5 @@
 import './styles/main.css';
-import { renderHome, renderVenue, renderMap, renderLog } from './js/pages.js';
+import { renderHome, renderVenue, renderMap, renderLog, renderLeaderboardDemo } from './js/pages.js';
 
 const app = document.getElementById('app');
 
@@ -49,6 +49,8 @@ function route() {
     renderMap(content);
   } else if (path.startsWith('/log')) {
     renderLog(content);
+  } else if (path.startsWith('/leaderboard-demo')) {
+    renderLeaderboardDemo(content);
   } else {
     content.innerHTML = '<p class="empty">Page not found. <a href="#/">Go home</a></p>';
   }
